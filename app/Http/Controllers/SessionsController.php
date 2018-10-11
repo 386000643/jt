@@ -8,6 +8,13 @@ use Auth;
 
 class SessionsController extends Controller
 {
+
+    //guest指定未登录用户可以访问的动作
+    public function __construct(){
+        $this->middleware('guest',[
+            'only'=>['create']
+        ]);
+    }
     //登录界面
     public function create(){
         return view('sessions.create');
@@ -25,7 +32,8 @@ class SessionsController extends Controller
        if (Auth::attempt($credentials,$request->has('remember'))) {
            //登录成功
             session()->flash('success','登录成功');
-            return redirect()->route('users.show',[Auth::user()]);
+            //intended跳转至上一次请求访问的页面
+            return redirect()->intended(route('users.show',[Auth::user()]));
        }else{
         //登录失败
 
