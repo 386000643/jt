@@ -54,7 +54,12 @@ p {
 .navbar-inverse {
   background-color: $navbar-color;
 }
-
+#logout {
+  cursor: default;
+  &:hover {
+    background-color: transparent;
+  }
+}
 #logo {
   float: left;
   margin-right: 10px;
