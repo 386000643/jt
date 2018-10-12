@@ -30,10 +30,16 @@ class SessionsController extends Controller
 
         //与数据库里面的数据进行对比
        if (Auth::attempt($credentials,$request->has('remember'))) {
-           //登录成功
-            session()->flash('success','登录成功');
-            //intended跳转至上一次请求访问的页面
-            return redirect()->intended(route('users.show',[Auth::user()]));
+           //匹配成功，判断是否有激活
+            if (Auth::user()->activated) {
+                session()->flash('success','登录成功');
+                //intended跳转至上一次请求访问的页面
+                return redirect()->intended(route('users.show',[Auth::user()]));
+            }else{
+                session()->flash('warning','账户尚未激活，请检查邮箱');
+                return redirect('/');
+            }
+
        }else{
         //登录失败
 
